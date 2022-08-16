@@ -34,22 +34,26 @@ extern "C" {
 
 // vector scale
 // vector [sx] = float [sa] * vector [sx]
-extern void csscal(const MKL_INT *n, const float *sa, complex<float> *sx,
+#define csscal csscal_
+extern void csscal_(const MKL_INT *n, const float *sa, complex<float> *sx,
                    const MKL_INT *incx) noexcept;
 
 // vector [sx] = complex [sa] * vector [sx]
-extern void cscal(const MKL_INT *n, const complex<float> *sa,
+#define cscal cscal_
+extern void cscal_(const MKL_INT *n, const complex<float> *sa,
                   complex<float> *sx, const MKL_INT *incx) noexcept;
 
 // vector copy
 // vector [dy] = [dx]
-extern void ccopy(const MKL_INT *n, const complex<float> *dx,
+#define ccopy ccopy_
+extern void ccopy_(const MKL_INT *n, const complex<float> *dx,
                   const MKL_INT *incx, complex<float> *dy,
                   const MKL_INT *incy) noexcept;
 
 // vector addition
 // vector [sy] = vector [sy] + complex [sa] * vector [sx]
-extern void caxpy(const MKL_INT *n, const complex<float> *sa,
+#define caxpy caxpy_
+extern void caxpy_(const MKL_INT *n, const complex<float> *sa,
                   const complex<float> *sx, const MKL_INT *incx,
                   complex<float> *sy, const MKL_INT *incy) noexcept;
 
@@ -59,12 +63,14 @@ extern void caxpy(const MKL_INT *n, const complex<float> *sa,
 //                   const complex<float> *zy, const MKL_INT *incy) noexcept;
 
 // Euclidean norm of a vector
-extern float scnrm2(const MKL_INT *n, const complex<float> *x,
+#define scnrm2 scnrm2_
+extern float scnrm2_(const MKL_INT *n, const complex<float> *x,
                     const MKL_INT *incx) noexcept;
 
 // matrix multiplication
 // mat [c] = complex [alpha] * mat [a] * mat [b] + complex [beta] * mat [c]
-extern void cgemm(const char *transa, const char *transb, const MKL_INT *m,
+#define cgemm cgemm_
+extern void cgemm_(const char *transa, const char *transb, const MKL_INT *m,
                   const MKL_INT *n, const MKL_INT *k,
                   const complex<float> *alpha, const complex<float> *a,
                   const MKL_INT *lda, const complex<float> *b,
@@ -72,16 +78,19 @@ extern void cgemm(const char *transa, const char *transb, const MKL_INT *m,
                   complex<float> *c, const MKL_INT *ldc) noexcept;
 
 // LU factorization
-extern void cgetrf(const MKL_INT *m, const MKL_INT *n, complex<float> *a,
+#define cgetrf cgetrf_
+extern void cgetrf_(const MKL_INT *m, const MKL_INT *n, complex<float> *a,
                    const MKL_INT *lda, MKL_INT *ipiv, MKL_INT *info);
 
 // matrix inverse
-extern void cgetri(const MKL_INT *n, complex<float> *a, const MKL_INT *lda,
+#define cgetri cgetri_
+extern void cgetri_(const MKL_INT *n, complex<float> *a, const MKL_INT *lda,
                    MKL_INT *ipiv, complex<float> *work, const MKL_INT *lwork,
                    MKL_INT *info);
 
 // eigenvalue problem
-extern void cgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
+#define cgeev cgeev_
+extern void cgeev_(const char *jobvl, const char *jobvr, const MKL_INT *n,
                   complex<float> *a, const MKL_INT *lda, complex<float> *w,
                   complex<float> *vl, const MKL_INT *ldvl, complex<float> *vr,
                   const MKL_INT *ldvr, complex<float> *work,
@@ -89,56 +98,66 @@ extern void cgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
 
 // matrix-vector multiplication
 // vec [y] = complex [alpha] * mat [a] * vec [x] + complex [beta] * vec [y]
-extern void cgemv(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define cgemv cgemv_
+extern void cgemv_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const complex<float> *alpha, const complex<float> *a,
                   const MKL_INT *lda, const complex<float> *x,
                   const MKL_INT *incx, const complex<float> *beta,
                   complex<float> *y, const MKL_INT *incy) noexcept;
 
 // linear system a * x = b
-extern void cgesv(const MKL_INT *n, const MKL_INT *nrhs, complex<float> *a,
+#define cgesv cgesv_
+extern void cgesv_(const MKL_INT *n, const MKL_INT *nrhs, complex<float> *a,
                   const MKL_INT *lda, MKL_INT *ipiv, complex<float> *b,
                   const MKL_INT *ldb, MKL_INT *info);
 
 // least squares problem a * x = b
-extern void cgels(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define cgels cgels_
+extern void cgels_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const MKL_INT *nrhs, complex<float> *a, const MKL_INT *lda,
                   complex<float> *b, const MKL_INT *ldb, complex<float> *work,
                   const MKL_INT *lwork, MKL_INT *info);
 
 // matrix copy
 // mat [b] = mat [a]
-extern void clacpy(const char *uplo, const MKL_INT *m, const MKL_INT *n,
+#define clacpy clacpy_
+extern void clacpy_(const char *uplo, const MKL_INT *m, const MKL_INT *n,
                    const complex<float> *a, const MKL_INT *lda,
                    complex<float> *b, const MKL_INT *ldb);
 
 // QR factorization
-extern void cgeqrf(const MKL_INT *m, const MKL_INT *n, complex<float> *a,
+#define cgeqrf cgeqrf_
+extern void cgeqrf_(const MKL_INT *m, const MKL_INT *n, complex<float> *a,
                    const MKL_INT *lda, complex<float> *tau,
                    complex<float> *work, const MKL_INT *lwork, MKL_INT *info);
-extern void cungqr(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define cungqr cungqr_
+extern void cungqr_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    complex<float> *a, const MKL_INT *lda,
                    const complex<float> *tau, complex<float> *work,
                    const MKL_INT *lwork, MKL_INT *info);
 
 // LQ factorization
-extern void cgelqf(const MKL_INT *m, const MKL_INT *n, complex<float> *a,
+#define cgelqf cgelqf_
+extern void cgelqf_(const MKL_INT *m, const MKL_INT *n, complex<float> *a,
                    const MKL_INT *lda, complex<float> *tau,
                    complex<float> *work, const MKL_INT *lwork, MKL_INT *info);
-extern void cunglq(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define cunglq cunglq_
+extern void cunglq_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    complex<float> *a, const MKL_INT *lda,
                    const complex<float> *tau, complex<float> *work,
                    const MKL_INT *lwork, MKL_INT *info);
 
 // eigenvalue problem
-extern void cheev(const char *jobz, const char *uplo, const MKL_INT *n,
+#define cheev cheev_
+extern void cheev_(const char *jobz, const char *uplo, const MKL_INT *n,
                   complex<float> *a, const MKL_INT *lda, float *w,
                   complex<float> *work, const MKL_INT *lwork, float *rwork,
                   MKL_INT *info);
 
 // SVD
 // mat [a] = mat [u] * vector [sigma] * mat [vt]
-extern void cgesvd(const char *jobu, const char *jobvt, const MKL_INT *m,
+#define cgesvd cgesvd_
+extern void cgesvd_(const char *jobu, const char *jobvt, const MKL_INT *m,
                    const MKL_INT *n, complex<float> *a, const MKL_INT *lda,
                    float *s, complex<float> *u, const MKL_INT *ldu,
                    complex<float> *vt, const MKL_INT *ldvt,
@@ -147,22 +166,26 @@ extern void cgesvd(const char *jobu, const char *jobvt, const MKL_INT *m,
 
 // vector scale
 // vector [sx] = double [sa] * vector [sx]
-extern void zdscal(const MKL_INT *n, const double *sa, complex<double> *sx,
+#define zdscal zdscal_
+extern void zdscal_(const MKL_INT *n, const double *sa, complex<double> *sx,
                    const MKL_INT *incx) noexcept;
 
 // vector [sx] = complex [sa] * vector [sx]
-extern void zscal(const MKL_INT *n, const complex<double> *sa,
+#define zscal zscal_
+extern void zscal_(const MKL_INT *n, const complex<double> *sa,
                   complex<double> *sx, const MKL_INT *incx) noexcept;
 
 // vector copy
 // vector [dy] = [dx]
-extern void zcopy(const MKL_INT *n, const complex<double> *dx,
+#define zcopy zcopy_
+extern void zcopy_(const MKL_INT *n, const complex<double> *dx,
                   const MKL_INT *incx, complex<double> *dy,
                   const MKL_INT *incy) noexcept;
 
 // vector addition
 // vector [sy] = vector [sy] + complex [sa] * vector [sx]
-extern void zaxpy(const MKL_INT *n, const complex<double> *sa,
+#define zaxpy zaxpy_
+extern void zaxpy_(const MKL_INT *n, const complex<double> *sa,
                   const complex<double> *sx, const MKL_INT *incx,
                   complex<double> *sy, const MKL_INT *incy) noexcept;
 
@@ -172,12 +195,14 @@ extern void zaxpy(const MKL_INT *n, const complex<double> *sa,
 //                   const complex<double> *zy, const MKL_INT *incy) noexcept;
 
 // Euclidean norm of a vector
-extern double dznrm2(const MKL_INT *n, const complex<double> *x,
+#define dznrm2 dznrm2_
+extern double dznrm2_(const MKL_INT *n, const complex<double> *x,
                      const MKL_INT *incx) noexcept;
 
 // matrix multiplication
 // mat [c] = complex [alpha] * mat [a] * mat [b] + complex [beta] * mat [c]
-extern void zgemm(const char *transa, const char *transb, const MKL_INT *m,
+#define zgemm zgemm_
+extern void zgemm_(const char *transa, const char *transb, const MKL_INT *m,
                   const MKL_INT *n, const MKL_INT *k,
                   const complex<double> *alpha, const complex<double> *a,
                   const MKL_INT *lda, const complex<double> *b,
@@ -185,16 +210,19 @@ extern void zgemm(const char *transa, const char *transb, const MKL_INT *m,
                   complex<double> *c, const MKL_INT *ldc) noexcept;
 
 // LU factorization
-extern void zgetrf(const MKL_INT *m, const MKL_INT *n, complex<double> *a,
+#define zgetrf zgetrf_
+extern void zgetrf_(const MKL_INT *m, const MKL_INT *n, complex<double> *a,
                    const MKL_INT *lda, MKL_INT *ipiv, MKL_INT *info);
 
 // matrix inverse
-extern void zgetri(const MKL_INT *n, complex<double> *a, const MKL_INT *lda,
+#define zgetri zgetri_
+extern void zgetri_(const MKL_INT *n, complex<double> *a, const MKL_INT *lda,
                    MKL_INT *ipiv, complex<double> *work, const MKL_INT *lwork,
                    MKL_INT *info);
 
 // eigenvalue problem
-extern void zgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
+#define zgeev zgeev_
+extern void zgeev_(const char *jobvl, const char *jobvr, const MKL_INT *n,
                   complex<double> *a, const MKL_INT *lda, complex<double> *w,
                   complex<double> *vl, const MKL_INT *ldvl, complex<double> *vr,
                   const MKL_INT *ldvr, complex<double> *work,
@@ -202,56 +230,66 @@ extern void zgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
 
 // matrix-vector multiplication
 // vec [y] = complex [alpha] * mat [a] * vec [x] + complex [beta] * vec [y]
-extern void zgemv(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define zgemv zgemv_
+extern void zgemv_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const complex<double> *alpha, const complex<double> *a,
                   const MKL_INT *lda, const complex<double> *x,
                   const MKL_INT *incx, const complex<double> *beta,
                   complex<double> *y, const MKL_INT *incy) noexcept;
 
 // linear system a * x = b
-extern void zgesv(const MKL_INT *n, const MKL_INT *nrhs, complex<double> *a,
+#define zgesv zgesv_
+extern void zgesv_(const MKL_INT *n, const MKL_INT *nrhs, complex<double> *a,
                   const MKL_INT *lda, MKL_INT *ipiv, complex<double> *b,
                   const MKL_INT *ldb, MKL_INT *info);
 
 // least squares problem a * x = b
-extern void zgels(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define zgels zgels_
+extern void zgels_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const MKL_INT *nrhs, complex<double> *a, const MKL_INT *lda,
                   complex<double> *b, const MKL_INT *ldb, complex<double> *work,
                   const MKL_INT *lwork, MKL_INT *info);
 
 // matrix copy
 // mat [b] = mat [a]
-extern void zlacpy(const char *uplo, const MKL_INT *m, const MKL_INT *n,
+#define zlacpy zlacpy_
+extern void zlacpy_(const char *uplo, const MKL_INT *m, const MKL_INT *n,
                    const complex<double> *a, const MKL_INT *lda,
                    complex<double> *b, const MKL_INT *ldb);
 
 // QR factorization
-extern void zgeqrf(const MKL_INT *m, const MKL_INT *n, complex<double> *a,
+#define zgeqrf zgeqrf_
+extern void zgeqrf_(const MKL_INT *m, const MKL_INT *n, complex<double> *a,
                    const MKL_INT *lda, complex<double> *tau,
                    complex<double> *work, const MKL_INT *lwork, MKL_INT *info);
-extern void zungqr(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define zungqr zungqr_
+extern void zungqr_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    complex<double> *a, const MKL_INT *lda,
                    const complex<double> *tau, complex<double> *work,
                    const MKL_INT *lwork, MKL_INT *info);
 
 // LQ factorization
-extern void zgelqf(const MKL_INT *m, const MKL_INT *n, complex<double> *a,
+#define zgelqf zgelqf_
+extern void zgelqf_(const MKL_INT *m, const MKL_INT *n, complex<double> *a,
                    const MKL_INT *lda, complex<double> *tau,
                    complex<double> *work, const MKL_INT *lwork, MKL_INT *info);
-extern void zunglq(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define zunglq zunglq_
+extern void zunglq_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    complex<double> *a, const MKL_INT *lda,
                    const complex<double> *tau, complex<double> *work,
                    const MKL_INT *lwork, MKL_INT *info);
 
 // eigenvalue problem
-extern void zheev(const char *jobz, const char *uplo, const MKL_INT *n,
+#define zheev zheev_
+extern void zheev_(const char *jobz, const char *uplo, const MKL_INT *n,
                   complex<double> *a, const MKL_INT *lda, double *w,
                   complex<double> *work, const MKL_INT *lwork, double *rwork,
                   MKL_INT *info);
 
 // SVD
 // mat [a] = mat [u] * vector [sigma] * mat [vt]
-extern void zgesvd(const char *jobu, const char *jobvt, const MKL_INT *m,
+#define zgesvd zgesvd_
+extern void zgesvd_(const char *jobu, const char *jobvt, const MKL_INT *m,
                    const MKL_INT *n, complex<double> *a, const MKL_INT *lda,
                    double *s, complex<double> *u, const MKL_INT *ldu,
                    complex<double> *vt, const MKL_INT *ldvt,

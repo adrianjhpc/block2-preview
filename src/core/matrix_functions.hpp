@@ -35,34 +35,40 @@ namespace block2 {
 
 extern "C" {
 
-#ifndef _HAS_INTEL_MKL
+#if !defined(_HAS_INTEL_MKL) && !defined(_HAS_CRAY_LIBSCI)
 
-// vector scale
+	// vector scale
 // vector [sx] = float [sa] * vector [sx]
-extern void sscal(const MKL_INT *n, const float *sa, float *sx,
+#define sscal sscal_
+extern void sscal_(const MKL_INT *n, const float *sa, float *sx,
                   const MKL_INT *incx) noexcept;
 
 // vector copy
 // vector [dy] = [dx]
-extern void scopy(const MKL_INT *n, const float *dx, const MKL_INT *incx,
+#define scopy scopy_
+extern void scopy_(const MKL_INT *n, const float *dx, const MKL_INT *incx,
                   float *dy, const MKL_INT *incy) noexcept;
 
 // vector addition
 // vector [sy] = vector [sy] + float [sa] * vector [sx]
-extern void saxpy(const MKL_INT *n, const float *sa, const float *sx,
+#define saxpy saxpy_
+extern void saxpy_(const MKL_INT *n, const float *sa, const float *sx,
                   const MKL_INT *incx, float *sy, const MKL_INT *incy) noexcept;
 
 // vector dot product
-extern float sdot(const MKL_INT *n, const float *dx, const MKL_INT *incx,
+#define sdot sdot_
+extern float sdot_(const MKL_INT *n, const float *dx, const MKL_INT *incx,
                   const float *dy, const MKL_INT *incy) noexcept;
 
 // Euclidean norm of a vector
-extern float snrm2(const MKL_INT *n, const float *x,
+#define snrm2 snrm2_
+extern float snrm2_(const MKL_INT *n, const float *x,
                    const MKL_INT *incx) noexcept;
 
 // matrix multiplication
 // mat [c] = float [alpha] * mat [a] * mat [b] + float [beta] * mat [c]
-extern void sgemm(const char *transa, const char *transb, const MKL_INT *m,
+#define sgemm sgemm_
+extern void sgemm_(const char *transa, const char *transb, const MKL_INT *m,
                   const MKL_INT *n, const MKL_INT *k, const float *alpha,
                   const float *a, const MKL_INT *lda, const float *b,
                   const MKL_INT *ldb, const float *beta, float *c,
@@ -70,96 +76,115 @@ extern void sgemm(const char *transa, const char *transb, const MKL_INT *m,
 
 // matrix-vector multiplication
 // vec [y] = float [alpha] * mat [a] * vec [x] + float [beta] * vec [y]
-extern void sgemv(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define sgemv sgemv_
+extern void sgemv_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const float *alpha, const float *a, const MKL_INT *lda,
                   const float *x, const MKL_INT *incx, const float *beta,
                   float *y, const MKL_INT *incy) noexcept;
 
 // linear system a * x = b
-extern void sgesv(const MKL_INT *n, const MKL_INT *nrhs, float *a,
+#define sgesv sgesv_
+extern void sgesv_(const MKL_INT *n, const MKL_INT *nrhs, float *a,
                   const MKL_INT *lda, MKL_INT *ipiv, float *b,
                   const MKL_INT *ldb, MKL_INT *info);
 
 // QR factorization
-extern void sgeqrf(const MKL_INT *m, const MKL_INT *n, float *a,
+#define sgeqrf sgeqrf_
+extern void sgeqrf_(const MKL_INT *m, const MKL_INT *n, float *a,
                    const MKL_INT *lda, float *tau, float *work,
                    const MKL_INT *lwork, MKL_INT *info);
-extern void sorgqr(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define sorgqr sorgqr_
+extern void sorgqr_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    float *a, const MKL_INT *lda, const float *tau, float *work,
                    const MKL_INT *lwork, MKL_INT *info);
 
 // LQ factorization
-extern void sgelqf(const MKL_INT *m, const MKL_INT *n, float *a,
+#define sgelqf sgelqf_
+extern void sgelqf_(const MKL_INT *m, const MKL_INT *n, float *a,
                    const MKL_INT *lda, float *tau, float *work,
                    const MKL_INT *lwork, MKL_INT *info);
-extern void sorglq(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define sorglq sorglq_
+extern void sorglq_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    float *a, const MKL_INT *lda, const float *tau, float *work,
                    const MKL_INT *lwork, MKL_INT *info);
 
 // LU factorization
-extern void sgetrf(const MKL_INT *m, const MKL_INT *n, float *a,
+#define sgetrf sgetrf_
+extern void sgetrf_(const MKL_INT *m, const MKL_INT *n, float *a,
                    const MKL_INT *lda, MKL_INT *ipiv, MKL_INT *info);
 
 // matrix inverse
-extern void sgetri(const MKL_INT *m, float *a, const MKL_INT *lda,
+#define sgetri sgetri_
+extern void sgetri_(const MKL_INT *m, float *a, const MKL_INT *lda,
                    MKL_INT *ipiv, float *work, const MKL_INT *lwork,
                    MKL_INT *info);
 
 // eigenvalue problem
-extern void ssyev(const char *jobz, const char *uplo, const MKL_INT *n,
+#define ssyev ssyev_
+extern void ssyev_(const char *jobz, const char *uplo, const MKL_INT *n,
                   float *a, const MKL_INT *lda, float *w, float *work,
                   const MKL_INT *lwork, MKL_INT *info);
 
-extern void sgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
+#define sgeev sgeev_
+extern void sgeev_(const char *jobvl, const char *jobvr, const MKL_INT *n,
                   float *a, const MKL_INT *lda, float *wr, float *wi, float *vl,
                   const MKL_INT *ldvl, float *vr, const MKL_INT *ldvr,
                   float *work, const MKL_INT *lwork, MKL_INT *info);
 
 // SVD
 // mat [a] = mat [u] * vector [sigma] * mat [vt]
-extern void sgesvd(const char *jobu, const char *jobvt, const MKL_INT *m,
+#define sgesvd sgesvd_
+extern void sgesvd_(const char *jobu, const char *jobvt, const MKL_INT *m,
                    const MKL_INT *n, float *a, const MKL_INT *lda, float *s,
                    float *u, const MKL_INT *ldu, float *vt, const MKL_INT *ldvt,
                    float *work, const MKL_INT *lwork, MKL_INT *info);
 
 // least squares problem a * x = b
-extern void sgels(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define sgels sgels_
+extern void sgels_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const MKL_INT *nrhs, float *a, const MKL_INT *lda, float *b,
                   const MKL_INT *ldb, float *work, const MKL_INT *lwork,
                   MKL_INT *info);
 
 // matrix copy
 // mat [b] = mat [a]
-extern void slacpy(const char *uplo, const int *m, const int *n, const float *a,
+#define slacpy slacpy_
+extern void slacpy_(const char *uplo, const int *m, const int *n, const float *a,
                    const int *lda, float *b, const int *ldb);
 
 // vector scale
 // vector [sx] = float [sa] * vector [sx]
-extern void dscal(const MKL_INT *n, const double *sa, double *sx,
+#define dscal dscal_
+extern void dscal_(const MKL_INT *n, const double *sa, double *sx,
                   const MKL_INT *incx) noexcept;
 
 // vector copy
 // vector [dy] = [dx]
-extern void dcopy(const MKL_INT *n, const double *dx, const MKL_INT *incx,
+#define dcopy dcopy_
+extern void dcopy_(const MKL_INT *n, const double *dx, const MKL_INT *incx,
                   double *dy, const MKL_INT *incy) noexcept;
 
 // vector addition
 // vector [sy] = vector [sy] + double [sa] * vector [sx]
-extern void daxpy(const MKL_INT *n, const double *sa, const double *sx,
+#define daxpy daxpy_
+extern void daxpy_(const MKL_INT *n, const double *sa, const double *sx,
                   const MKL_INT *incx, double *sy,
                   const MKL_INT *incy) noexcept;
 
 // vector dot product
-extern double ddot(const MKL_INT *n, const double *dx, const MKL_INT *incx,
+#define ddot ddot_
+extern double ddot_(const MKL_INT *n, const double *dx, const MKL_INT *incx,
                    const double *dy, const MKL_INT *incy) noexcept;
 
 // Euclidean norm of a vector
-extern double dnrm2(const MKL_INT *n, const double *x,
+#define dnrm2 dnrm2_
+extern double dnrm2_(const MKL_INT *n, const double *x,
                     const MKL_INT *incx) noexcept;
 
 // matrix multiplication
 // mat [c] = double [alpha] * mat [a] * mat [b] + double [beta] * mat [c]
-extern void dgemm(const char *transa, const char *transb, const MKL_INT *m,
+#define dgemm dgemm_
+extern void dgemm_(const char *transa, const char *transb, const MKL_INT *m,
                   const MKL_INT *n, const MKL_INT *k, const double *alpha,
                   const double *a, const MKL_INT *lda, const double *b,
                   const MKL_INT *ldb, const double *beta, double *c,
@@ -167,47 +192,57 @@ extern void dgemm(const char *transa, const char *transb, const MKL_INT *m,
 
 // matrix-vector multiplication
 // vec [y] = double [alpha] * mat [a] * vec [x] + double [beta] * vec [y]
-extern void dgemv(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define dgemv dgemv_
+extern void dgemv_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const double *alpha, const double *a, const MKL_INT *lda,
                   const double *x, const MKL_INT *incx, const double *beta,
                   double *y, const MKL_INT *incy) noexcept;
 
 // linear system a * x = b
-extern void dgesv(const MKL_INT *n, const MKL_INT *nrhs, double *a,
+#define dgesv dgesv_
+extern void dgesv_(const MKL_INT *n, const MKL_INT *nrhs, double *a,
                   const MKL_INT *lda, MKL_INT *ipiv, double *b,
                   const MKL_INT *ldb, MKL_INT *info);
 
 // QR factorization
-extern void dgeqrf(const MKL_INT *m, const MKL_INT *n, double *a,
+#define dgeqrf dgeqrf_
+extern void dgeqrf_(const MKL_INT *m, const MKL_INT *n, double *a,
                    const MKL_INT *lda, double *tau, double *work,
                    const MKL_INT *lwork, MKL_INT *info);
-extern void dorgqr(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define dorgqr dorgqr_
+extern void dorgqr_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    double *a, const MKL_INT *lda, const double *tau,
                    double *work, const MKL_INT *lwork, MKL_INT *info);
 
 // LQ factorization
-extern void dgelqf(const MKL_INT *m, const MKL_INT *n, double *a,
+#define dgelqf dgelqf_
+extern void dgelqf_(const MKL_INT *m, const MKL_INT *n, double *a,
                    const MKL_INT *lda, double *tau, double *work,
                    const MKL_INT *lwork, MKL_INT *info);
-extern void dorglq(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
+#define dorglq dorglq_
+extern void dorglq_(const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
                    double *a, const MKL_INT *lda, const double *tau,
                    double *work, const MKL_INT *lwork, MKL_INT *info);
 
 // LU factorization
-extern void dgetrf(const MKL_INT *m, const MKL_INT *n, double *a,
+#define dgetrf dgetrf_
+extern void dgetrf_(const MKL_INT *m, const MKL_INT *n, double *a,
                    const MKL_INT *lda, MKL_INT *ipiv, MKL_INT *info);
 
 // matrix inverse
-extern void dgetri(const MKL_INT *m, double *a, const MKL_INT *lda,
+#define dgetri dgetri_
+extern void dgetri_(const MKL_INT *m, double *a, const MKL_INT *lda,
                    MKL_INT *ipiv, double *work, const MKL_INT *lwork,
                    MKL_INT *info);
 
 // eigenvalue problem
-extern void dsyev(const char *jobz, const char *uplo, const MKL_INT *n,
+#define dsyev dsyev_
+extern void dsyev_(const char *jobz, const char *uplo, const MKL_INT *n,
                   double *a, const MKL_INT *lda, double *w, double *work,
                   const MKL_INT *lwork, MKL_INT *info);
 
-extern void dgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
+#define dgeev dgeev_
+extern void dgeev_(const char *jobvl, const char *jobvr, const MKL_INT *n,
                   double *a, const MKL_INT *lda, double *wr, double *wi,
                   double *vl, const MKL_INT *ldvl, double *vr,
                   const MKL_INT *ldvr, double *work, const MKL_INT *lwork,
@@ -215,21 +250,24 @@ extern void dgeev(const char *jobvl, const char *jobvr, const MKL_INT *n,
 
 // SVD
 // mat [a] = mat [u] * vector [sigma] * mat [vt]
-extern void dgesvd(const char *jobu, const char *jobvt, const MKL_INT *m,
+#define dgesvd dgesvd_
+extern void dgesvd_(const char *jobu, const char *jobvt, const MKL_INT *m,
                    const MKL_INT *n, double *a, const MKL_INT *lda, double *s,
                    double *u, const MKL_INT *ldu, double *vt,
                    const MKL_INT *ldvt, double *work, const MKL_INT *lwork,
                    MKL_INT *info);
 
 // least squares problem a * x = b
-extern void dgels(const char *trans, const MKL_INT *m, const MKL_INT *n,
+#define dgels dgels_
+extern void dgels_(const char *trans, const MKL_INT *m, const MKL_INT *n,
                   const MKL_INT *nrhs, double *a, const MKL_INT *lda, double *b,
                   const MKL_INT *ldb, double *work, const MKL_INT *lwork,
                   MKL_INT *info);
 
 // matrix copy
 // mat [b] = mat [a]
-extern void dlacpy(const char *uplo, const int *m, const int *n,
+#define dlacpy dlacpy_
+extern void dlacpy_(const char *uplo, const int *m, const int *n,
                    const double *a, const int *lda, double *b, const int *ldb);
 
 #endif
